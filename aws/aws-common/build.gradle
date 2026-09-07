@@ -1,0 +1,7 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    api platform("software.amazon.awssdk:bom:${project.ext.awsSdkVersion}")
+    api "software.amazon.awssdk:auth"
+    api "software.amazon.awssdk:regions"
+}

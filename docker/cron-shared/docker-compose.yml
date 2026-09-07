@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  cron-shared:
+    image: ${DOCKER_REGISTRY}/market-cron-shared:${TAG:-latest}
+    container_name: market-cron-shared
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-staging}
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_DB_NAME: ${MONGODB_DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      QPAY_USERNAME: ${QPAY_USERNAME}
+      QPAY_PASSWORD: ${QPAY_PASSWORD}
+      QPAY_INVOICE_CODE: ${QPAY_INVOICE_CODE}
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/${CONTEXT_PATH:-cron-shared}/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

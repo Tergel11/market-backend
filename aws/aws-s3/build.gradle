@@ -1,0 +1,9 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    implementation "software.amazon.awssdk:s3"
+    implementation "commons-io:commons-io:${project.ext.commonsIOVersion}"
+
+    api project(':aws:aws-common')
+    api project(':shared:model')
+}

@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "io.freefair.gradle:lombok-plugin:8.4"
+        classpath "io.spring.gradle:dependency-management-plugin:1.1.6"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.2.12"
+    }
+}
+
+subprojects {
+    group = 'market.commerce'
+    version = '0.0.1-SNAPSHOT'
+
+    ext {
+        springCloudVersion = '2022.0.4'
+        springDocVersion = '2.6.0'
+        springRetryVersion = '2.0.11'
+
+        awsSdkVersion = '2.21.22'
+        commonsCodecVersion = '1.16.0'
+        commonsIOVersion = '2.15.0'
+        commonsLang3Version = '3.12.0'
+        fastExcelVersion = '0.18.1'
+        guavaVersion = '31.1-jre'
+        httpClient5Version = '5.3'
+        jacksonVersion = '2.15.1'
+        jjwtVersion = '0.11.5'
+        mapStructVersion = '1.4.2.Final'
+        mongoDriverVersion = '4.11.5'
+        okHttp3Version = '4.9.3'
+        redissonVersion = '3.32.0'
+        thumbnailatorVersion = '0.4.17'
+        zxingVersion = '3.4.1'
+    }
+
+    apply plugin: 'java-library'
+    apply plugin: 'io.freefair.lombok'
+    apply plugin: 'io.spring.dependency-management'
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation "org.projectlombok:lombok:1.18.38"
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

@@ -1,0 +1,18 @@
+rootProject.name = 'market-backend'
+
+include 'shared:common'
+include 'shared:model'
+include 'shared:auth'
+include 'shared:service'
+include 'shared:web'
+
+include 'aws:aws-common'
+include 'aws:aws-s3'
+
+include 'integration:integration-payment'
+include 'integration:integration-delivery'
+
+include 'apis:public-api'
+include 'apis:manage-api'
+
+include 'cron:cron-shared'

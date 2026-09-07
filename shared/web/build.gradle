@@ -1,0 +1,7 @@
+dependencies {
+    // spring boot
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    // shared
+    api project(':shared:auth')
+}

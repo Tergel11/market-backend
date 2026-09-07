@@ -1,0 +1,19 @@
+dependencies {
+    // spring boot
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${project.ext.jacksonVersion}"
+    implementation "org.dhatim:fastexcel:${project.ext.fastExcelVersion}"
+    implementation "org.dhatim:fastexcel-reader:${project.ext.fastExcelVersion}"
+    implementation "org.apache.httpcomponents.client5:httpclient5:${project.ext.httpClient5Version}"
+
+    // shared
+    api project(':shared:model')
+    api project(':shared:common')
+    api project(':shared:auth')
+    api project(':aws:aws-s3')
+    api project(':integration:integration-payment')
+}
