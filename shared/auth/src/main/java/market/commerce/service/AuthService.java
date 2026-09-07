@@ -13,6 +13,7 @@ import market.commerce.repository.UserRepository;
 import market.commerce.util.JwtTokenUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -43,6 +44,10 @@ public class AuthService {
                 : customerRepository.findByPhone(identifier))
                 .orElseThrow(() -> new MessageException("auth.invalid-credentials"));
 
+        // social-only accounts have no password; say so rather than "wrong password"
+        if (ObjectUtils.isEmpty(customer.getPassword()))
+            throw new MessageException("auth.social-only");
+
         if (!passwordEncoder.matches(rawPassword, customer.getPassword()))
             throw new MessageException("auth.invalid-credentials");
 
@@ -52,6 +57,13 @@ public class AuthService {
         customer.setLastLoginAt(Instant.now());
         customerRepository.save(customer);
 
+        return issueCustomerToken(customer);
+    }
+
+    /**
+     * Mints a storefront token. Shared by password login and social login.
+     */
+    public AuthResponse issueCustomerToken(Customer customer) {
         String token = jwtTokenUtil.generateToken(
                 customer.getId(), List.of(ApplicationRole.ROLE_CUSTOMER), null);
 

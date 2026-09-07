@@ -111,10 +111,15 @@ public class GlobalExceptionHandler {
         return build(localizationUtil.errorServer(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
+    /**
+     * Services throw message keys ("auth.invalid-credentials"), so resolve
+     * through the bundle before returning. The message source is configured
+     * with useCodeAsDefaultMessage, so a plain sentence passes through as-is.
+     */
     private String message(Exception ex, String fallbackCode) {
         return ObjectUtils.isEmpty(ex.getMessage())
                 ? localizationUtil.buildMessage(fallbackCode)
-                : ex.getMessage();
+                : localizationUtil.buildMessage(ex.getMessage());
     }
 
     private ResponseEntity<ErrorResponse> build(String message, HttpStatus status, WebRequest request) {

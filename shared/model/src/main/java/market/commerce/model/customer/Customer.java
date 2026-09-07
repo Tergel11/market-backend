@@ -37,6 +37,15 @@ public class Customer extends BaseDocument {
     @Indexed(unique = true, sparse = true)
     private String phone;
 
+    /**
+     * Firebase uid. Firebase links Google, Apple and phone sign-in into a single
+     * uid, so this is the stable lookup key for every social login — never the
+     * email, which can change or be an Apple private relay address.
+     */
+    @Indexed(unique = true, sparse = true)
+    private String firebaseUid;
+
+    /** Null for customers who only ever signed in socially. */
     private String password;
 
     private String firstName;
@@ -47,6 +56,8 @@ public class Customer extends BaseDocument {
 
     private Boolean emailVerified;
     private Boolean phoneVerified;
+
+    private List<SocialIdentity> identities;
 
     private List<Address> addresses;
 

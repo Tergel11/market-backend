@@ -8,6 +8,9 @@ dependencies {
 
     implementation "org.apache.commons:commons-lang3:${project.ext.commonsLang3Version}"
 
+    // firebase auth (google / apple / phone otp token verification)
+    api "com.google.firebase:firebase-admin:${project.ext.firebaseAdminVersion}"
+
     // jjwt
     implementation "io.jsonwebtoken:jjwt-api:${project.ext.jjwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${project.ext.jjwtVersion}"

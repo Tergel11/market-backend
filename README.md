@@ -64,6 +64,59 @@ Secrets come from environment variables (`JWT_SECRET`, `AWS_ACCESS_KEY`,
 `QPAY_USERNAME`, ...) — no credentials are committed. When `aws.access-key` is
 empty the S3 beans are skipped, so a local run needs no AWS account.
 
+## Sign-in
+
+Password login (`POST /v1/auth/login`) and social login (`POST /v1/auth/social`)
+both end at the same place: a Customer and a `Market-Auth` JWT. Everything
+downstream — the filter, `AuthUserPrincipal`, every controller — is unaware of
+which was used.
+
+Google, Apple and phone OTP all go through **Firebase Auth**, and all three hit
+the *same* endpoint: the client SDK completes the provider flow and the sign-in
+method arrives as a claim inside the Firebase token.
+
+```
+POST /v1/auth/social   { "idToken": "<firebase id token>" }
+```
+
+**There is no server-side OTP endpoint.** For phone login the Firebase client
+SDK sends the SMS and checks the code, including reCAPTCHA/App Check abuse
+protection; the backend only ever sees the resulting token. Token verification
+is local — the Admin SDK caches Google's public keys, so it is not a network
+call per login.
+
+Firebase is off by default so a local run needs no service account:
+
+```properties
+firebase.enabled=${FIREBASE_ENABLED:false}
+firebase.project-id=${FIREBASE_PROJECT_ID:}
+firebase.credentials-path=${FIREBASE_CREDENTIALS_PATH:}   # file: or classpath:
+firebase.credentials-json=${FIREBASE_CREDENTIALS_JSON:}   # raw json, for containers
+```
+
+With it off, `/v1/auth/social` returns a localized 400 rather than failing to start.
+
+### Account resolution
+
+`SocialAuthService` resolves a token to a Customer in this order:
+
+1. **By `firebaseUid`.** Firebase merges Google, Apple and phone into one uid,
+   so this is the only stable key — never the email, which can change or be an
+   Apple private relay address.
+2. **By verified email**, linking to an existing account. Only when
+   `email_verified` is true: linking on an unverified address would let someone
+   pre-register a victim's email and capture their real login.
+3. **By phone number**, linking. Reaching phone sign-in at all means Firebase
+   verified the number.
+4. Otherwise create a Customer with `password = null`.
+
+Password login on such an account reports "signs in with Google, Apple or a
+phone number" rather than "wrong password".
+
+Swapping Firebase out later means writing one new `SocialTokenVerifier` that
+returns a `SocialUserInfo`; `SocialAuthService`, the Customer model and the
+controllers do not change.
+
 ## Domain notes
 
 **Product vs variant.** `Product` is the catalog entry; `ProductVariant` is what
@@ -93,4 +146,7 @@ goes through `MoneyUtil`.
 - `PaymentReconcileJob` — logs pending payments, does not settle them yet
 - `LowStockAlertJob` — logs, does not notify merchants
 - No notification module (email/SMS) yet
+- Apple account deletion — Apple requires apps offering sign-up to offer
+  deletion and to call its token-revocation endpoint; that needs the `.p8` key,
+  team id and key id, none of which login itself requires
 - No tests

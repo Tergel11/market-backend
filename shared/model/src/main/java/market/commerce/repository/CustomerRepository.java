@@ -16,6 +16,8 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     Optional<Customer> findByPhone(String phone);
 
+    Optional<Customer> findByFirebaseUid(String firebaseUid);
+
     boolean existsByEmail(String email);
 
     boolean existsByPhone(String phone);
