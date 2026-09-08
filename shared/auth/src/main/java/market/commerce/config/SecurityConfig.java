@@ -38,10 +38,7 @@ public class SecurityConfig {
             "/v1/auth/**",
             "/v1/catalog/**",
             "/v1/payment/callback/**",
-            "/actuator/**",
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/open-api-documentation/**"
+            "/actuator/**"
     };
 
     @Bean

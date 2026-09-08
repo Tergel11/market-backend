@@ -47,8 +47,6 @@ mongosh --eval 'rs.initiate()'
 ./gradlew :cron:cron-shared:bootRun
 ```
 
-Swagger UI: `http://localhost:8080/public-api/open-api-documentation`
-
 ## Profiles
 
 `application.properties` holds everything shared; the Mongo connection lives in

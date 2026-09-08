@@ -17,7 +17,6 @@ subprojects {
 
     ext {
         springCloudVersion = '2022.0.4'
-        springDocVersion = '2.6.0'
         springRetryVersion = '2.0.11'
 
         awsSdkVersion = '2.21.22'

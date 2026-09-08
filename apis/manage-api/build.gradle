@@ -24,7 +24,4 @@ dependencies {
     api project(':shared:service')
     api project(':shared:web')
     api project(':aws:aws-s3')
-
-    // open-api
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${project.ext.springDocVersion}"
 }

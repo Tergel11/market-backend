@@ -23,7 +23,4 @@ dependencies {
     api project(':shared:web')
     api project(':integration:integration-payment')
     api project(':integration:integration-delivery')
-
-    // open-api
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${project.ext.springDocVersion}"
 }
