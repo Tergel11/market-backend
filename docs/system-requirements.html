@@ -1,0 +1,634 @@
+<title>Market Requirements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+:root {
+  --accent:        #1D4E89;
+  --accent-soft:   #E7EDF6;
+  --accent-line:   #C3D3E8;
+  --ground:        #FCFCFD;
+  --surface:       #FFFFFF;
+  --surface-sunk:  #F4F6F9;
+  --rule:          #DFE3EA;
+  --rule-soft:     #ECEFF3;
+  --text:          #1A1E26;
+  --text-dim:      #5B6472;
+  --text-faint:    #8A929E;
+  --ok:            #2E7D4F;
+  --ok-bg:         #E6F2EA;
+  --warn:          #96620F;
+  --warn-bg:       #F8EFDD;
+  --idle:          #626A78;
+  --idle-bg:       #ECEEF2;
+  --diagram-bg:    #F4F6F8;
+  --diagram-edge:  #DCE1E8;
+  --measure: 68ch;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --accent:       #7FA8DA;
+    --accent-soft:  #162436;
+    --accent-line:  #2B4364;
+    --ground:       #101319;
+    --surface:      #161A22;
+    --surface-sunk: #1B2029;
+    --rule:         #2A303B;
+    --rule-soft:    #222833;
+    --text:         #E4E7EC;
+    --text-dim:     #A2AAB8;
+    --text-faint:   #79818E;
+    --ok:           #6FBF8E;
+    --ok-bg:        #16291F;
+    --warn:         #D9A94E;
+    --warn-bg:      #2C2314;
+    --idle:         #9AA2AF;
+    --idle-bg:      #22272F;
+  }
+}
+:root[data-theme="dark"] {
+  --accent:       #7FA8DA;
+  --accent-soft:  #162436;
+  --accent-line:  #2B4364;
+  --ground:       #101319;
+  --surface:      #161A22;
+  --surface-sunk: #1B2029;
+  --rule:         #2A303B;
+  --rule-soft:    #222833;
+  --text:         #E4E7EC;
+  --text-dim:     #A2AAB8;
+  --text-faint:   #79818E;
+  --ok:           #6FBF8E;
+  --ok-bg:        #16291F;
+  --warn:         #D9A94E;
+  --warn-bg:      #2C2314;
+  --idle:         #9AA2AF;
+  --idle-bg:      #22272F;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface);
+  padding: 2.6rem 1.5rem 1.9rem;
+}
+.masthead-inner { max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: .85rem; }
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .7rem; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600;
+}
+.masthead h1 {
+  font-family: "IBM Plex Serif", Georgia, serif;
+  font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.7rem);
+  line-height: 1.15; margin: 0; text-wrap: balance; letter-spacing: -.015em;
+}
+.standfirst { margin: 0; color: var(--text-dim); max-width: var(--measure); font-size: 1.02rem; }
+.legend { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .4rem; }
+
+.shell {
+  max-width: 1180px; margin: 0 auto; padding: 0 1.5rem 5rem;
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 3rem; align-items: start;
+}
+@media (max-width: 900px) { .shell { grid-template-columns: 1fr; gap: 0; } .sidenav { display: none; } }
+
+.sidenav { position: sticky; top: 1.5rem; padding-top: 2.6rem; }
+.sidenav-title {
+  font-family: "IBM Plex Mono", monospace; font-size: .66rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: .7rem; font-weight: 600;
+}
+.sidenav ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .1rem; }
+.sidenav a {
+  display: flex; gap: .55rem; padding: .3rem .5rem; border-radius: 4px;
+  color: var(--text-dim); text-decoration: none; font-size: .845rem; line-height: 1.4;
+}
+.sidenav a:hover { background: var(--accent-soft); color: var(--accent); }
+.sidenav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.sidenav .num { font-family: "IBM Plex Mono", monospace; color: var(--text-faint); font-size: .78rem; }
+
+main { padding-top: 2.6rem; min-width: 0; }
+
+section { margin-bottom: 3.4rem; scroll-margin-top: 1.5rem; }
+section > h2 {
+  font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+  font-size: 1.45rem; letter-spacing: -.01em; margin: 0 0 .2rem;
+  padding-bottom: .55rem; border-bottom: 2px solid var(--accent-line);
+  display: flex; align-items: baseline; gap: .7rem; text-wrap: balance;
+}
+section > h2 .num {
+  font-family: "IBM Plex Mono", monospace; font-size: .82rem;
+  color: var(--accent); font-weight: 600;
+}
+h3 {
+  font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: 1.02rem;
+  margin: 2rem 0 .6rem; color: var(--text);
+}
+h3 .code {
+  font-family: "IBM Plex Mono", monospace; color: var(--accent);
+  font-size: .86rem; margin-right: .45rem;
+}
+p { max-width: var(--measure); margin: 0 0 .9rem; }
+p.lede { margin-top: 1rem; }
+ul { max-width: var(--measure); padding-left: 1.15rem; margin: 0 0 .9rem; }
+li { margin-bottom: .35rem; }
+strong { font-weight: 600; }
+code {
+  font-family: "IBM Plex Mono", monospace; font-size: .855em;
+  background: var(--surface-sunk); padding: .1em .35em; border-radius: 3px;
+  border: 1px solid var(--rule-soft);
+}
+a.ref { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+.scroller { overflow-x: auto; margin: 1rem 0 1.3rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .875rem; min-width: 640px; }
+thead th {
+  text-align: left; font-family: "IBM Plex Mono", monospace; font-weight: 600;
+  font-size: .68rem; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--text-faint); padding: .7rem .85rem; border-bottom: 1px solid var(--rule);
+  background: var(--surface-sunk); white-space: nowrap;
+}
+tbody td { padding: .66rem .85rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; line-height: 1.5; }
+tbody tr:last-child td { border-bottom: none; }
+td.id {
+  font-family: "IBM Plex Mono", monospace; font-size: .8rem; font-weight: 500;
+  color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+td.story { min-width: 250px; }
+td.crit { color: var(--text-dim); min-width: 230px; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: .38rem; white-space: nowrap;
+  font-family: "IBM Plex Mono", monospace; font-size: .69rem; font-weight: 600;
+  letter-spacing: .04em; padding: .2rem .5rem .2rem .42rem; border-radius: 3px;
+  border: 1px solid currentColor;
+}
+.pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex: none; }
+.pill.built   { color: var(--ok);   background: var(--ok-bg); }
+.pill.partial { color: var(--warn); background: var(--warn-bg); }
+.pill.todo    { color: var(--idle); background: var(--idle-bg); }
+.pill.todo::before { border-radius: 1px; }
+.pill.partial::before { border-radius: 1px 1px 50% 50%; }
+
+.figure {
+  background: var(--diagram-bg); border: 1px solid var(--diagram-edge);
+  border-radius: 6px; padding: 1.1rem; margin: 1.1rem 0 1.3rem; overflow-x: auto;
+}
+.figure pre.mermaid { margin: 0; background: none; border: none; text-align: center; }
+.figcaption {
+  font-family: "IBM Plex Mono", monospace; font-size: .69rem; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: .7rem; font-weight: 600;
+}
+
+.callout {
+  border-left: 3px solid var(--accent); background: var(--accent-soft);
+  padding: .85rem 1.1rem; border-radius: 0 5px 5px 0; margin: 1.1rem 0 1.3rem;
+  max-width: var(--measure);
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout .tag {
+  font-family: "IBM Plex Mono", monospace; font-size: .68rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); font-weight: 600; display: block; margin-bottom: .25rem;
+}
+
+.gapgrid { display: grid; gap: .9rem; margin-top: 1.1rem; }
+@media (min-width: 760px) { .gapgrid { grid-template-columns: 1fr 1fr; } }
+.gapcard { border: 1px solid var(--rule); border-radius: 6px; padding: 1rem 1.1rem; background: var(--surface); }
+.gapcard h4 {
+  margin: 0 0 .45rem; font-size: .9rem; font-weight: 600;
+  display: flex; align-items: center; gap: .5rem;
+}
+.gapcard p { font-size: .865rem; color: var(--text-dim); margin: 0; max-width: none; }
+
+footer {
+  max-width: 1180px; margin: 0 auto; padding: 1.6rem 1.5rem 3rem;
+  border-top: 1px solid var(--rule); color: var(--text-faint); font-size: .82rem;
+}
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow">Market · Requirements &amp; Analysis</div>
+    <h1>Multi-merchant marketplace for Mongolia</h1>
+    <p class="standfirst">Working document for the team. Scope is the whole product — backend, storefront, mobile and back-office. Requirements are written from the user's side, independent of which component implements them.</p>
+    <div class="legend">
+      <span class="pill built">Built</span>
+      <span class="pill partial">Partial</span>
+      <span class="pill todo">Todo</span>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="sidenav" aria-label="Sections">
+    <div class="sidenav-title">Contents</div>
+    <ol>
+      <li><a href="#product"><span class="num">1</span> Product</a></li>
+      <li><a href="#actors"><span class="num">2</span> Actors</a></li>
+      <li><a href="#context"><span class="num">3</span> Context</a></li>
+      <li><a href="#domain"><span class="num">4</span> Domain model</a></li>
+      <li><a href="#lifecycles"><span class="num">5</span> Lifecycles</a></li>
+      <li><a href="#epics"><span class="num">6</span> Epics</a></li>
+      <li><a href="#flows"><span class="num">7</span> Key flows</a></li>
+      <li><a href="#nfr"><span class="num">8</span> Non-functional</a></li>
+      <li><a href="#decisions"><span class="num">9</span> Open decisions</a></li>
+      <li><a href="#gaps"><span class="num">10</span> Gaps</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <section id="product">
+      <h2><span class="num">01</span> Product</h2>
+      <p class="lede">Merchants list products; customers browse, order and pay online; the platform takes a commission per order and settles the remainder to merchants.</p>
+      <p>This is a marketplace, not a single store — <code>Merchant.commissionRate</code> and a per-item <code>merchantId</code> on every order line commit us to that, and it drives the settlement, per-merchant fulfilment and payout requirements below.</p>
+      <p>Primary market is Mongolia: MNT pricing, Ulaanbaatar timestamps, <code>mn</code>/<code>en</code> content throughout.</p>
+      <div class="callout">
+        <span class="tag">How to read this</span>
+        <p>Status reflects the current state of <code>market-backend</code>. Much of it was derived from the code rather than written from scratch — the domain model, role matrix and lifecycles are read directly from what is implemented, so they are accurate by construction.</p>
+      </div>
+    </section>
+
+    <section id="actors">
+      <h2><span class="num">02</span> Actors</h2>
+      <div class="scroller"><table>
+        <thead><tr><th>Actor</th><th>Reaches system via</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Customer</strong></td><td>storefront web, mobile</td><td>Browse, buy, track, review</td></tr>
+          <tr><td><strong>Guest</strong></td><td>storefront web, mobile</td><td>Browse and build a cart before signing in</td></tr>
+          <tr><td><strong>Merchant</strong></td><td>back-office</td><td>Own catalog, stock, orders, payouts</td></tr>
+          <tr><td><strong>Operator</strong></td><td>back-office</td><td>Platform staff: order support, moderation</td></tr>
+          <tr><td><strong>Admin</strong></td><td>back-office</td><td>Users, merchants, config, commission</td></tr>
+          <tr><td><strong>System</strong></td><td>cron</td><td>Order expiry, reconciliation, alerts</td></tr>
+        </tbody>
+      </table></div>
+      <p>Merchant staff carry <code>merchantId</code> in their token, and every back-office query is scoped by it — a merchant can never read another's orders.</p>
+    </section>
+
+    <section id="context">
+      <h2><span class="num">03</span> System context</h2>
+      <div class="figure">
+        <div class="figcaption">Components and external dependencies</div>
+        <pre class="mermaid">
+flowchart LR
+    C["Customer<br/>web · mobile"] --> PA["public-api"]
+    M["Merchant · Operator · Admin<br/>back-office"] --> MA["manage-api"]
+    CR["cron"] --- DB[("MongoDB<br/>replica set")]
+    PA --- DB
+    MA --- DB
+    PA --> FB["Firebase Auth<br/>google · apple · phone"]
+    MA --> FB
+    PA --> PAY["QPay"]
+    PAY -.callback.-> PA
+    PA --> DEL["Delivery provider"]
+    MA --> S3["AWS S3 · CDN"]
+    CR --> PAY
+    CR --> NOTIF["Notifications<br/>email · SMS · push"]
+        </pre>
+      </div>
+      <p>Notifications and the tax-receipt integration are drawn because they are required, not because they exist — neither is built.</p>
+    </section>
+
+    <section id="domain">
+      <h2><span class="num">04</span> Domain model</h2>
+      <div class="figure">
+        <div class="figcaption">22 collections</div>
+        <pre class="mermaid">
+erDiagram
+    CATEGORY ||--o{ PRODUCT : classifies
+    BRAND ||--o{ PRODUCT : brands
+    MERCHANT ||--o{ PRODUCT : sells
+    MERCHANT ||--o{ WAREHOUSE : operates
+    PRODUCT ||--|{ PRODUCTVARIANT : has
+    PRODUCTVARIANT ||--o{ INVENTORY : "stocked as"
+    INVENTORY ||--o{ INVENTORYMOVEMENT : "ledgered by"
+    WAREHOUSE ||--o{ INVENTORY : holds
+    CUSTOMER ||--o| CART : owns
+    CUSTOMER ||--o{ ORDER : places
+    CUSTOMER ||--o{ REVIEW : writes
+    CART ||--o{ CARTITEM : contains
+    ORDER ||--|{ ORDERITEM : contains
+    ORDER ||--o{ PAYMENT : "paid by"
+    ORDER ||--o{ SHIPMENT : "delivered by"
+    ORDER ||--o{ REFUND : "refunded by"
+    COUPON ||--o{ COUPONUSAGE : "tracked by"
+    PRODUCT ||--o{ REVIEW : receives
+        </pre>
+      </div>
+      <p><strong>The load-bearing distinctions:</strong></p>
+      <ul>
+        <li><strong>Product vs ProductVariant.</strong> Product is the catalog entry and is not purchasable. The variant is what is bought — its own SKU, price and barcode. Price range and stock total on Product are denormalized from variants for listing queries.</li>
+        <li><strong>Inventory.</strong> <code>available = quantity − reserved</code>, per variant per warehouse. <strong>InventoryMovement</strong> is an append-only ledger; replaying it must reproduce Inventory.</li>
+        <li><strong>Order is a snapshot.</strong> Product name, price, options and address are copied at checkout, so later catalog edits never rewrite history.</li>
+        <li><strong>Cart.</strong> Guests are keyed by session and merged into the customer's cart on sign-in.</li>
+      </ul>
+    </section>
+
+    <section id="lifecycles">
+      <h2><span class="num">05</span> Lifecycles</h2>
+      <div class="figure">
+        <div class="figcaption">Order — transitions enforced in code</div>
+        <pre class="mermaid">
+stateDiagram-v2
+    [*] --> PENDING : checkout
+    PENDING --> PAID : payment confirmed
+    PENDING --> CANCELLED : customer or timeout
+    PAID --> CONFIRMED : merchant accepts
+    PAID --> CANCELLED
+    PAID --> REFUNDED
+    CONFIRMED --> SHIPPED : handed to courier
+    CONFIRMED --> CANCELLED
+    CONFIRMED --> REFUNDED
+    SHIPPED --> DELIVERED
+    SHIPPED --> REFUNDED
+    DELIVERED --> COMPLETED
+    DELIVERED --> REFUNDED
+    COMPLETED --> [*]
+    CANCELLED --> [*]
+    REFUNDED --> [*]
+        </pre>
+      </div>
+      <p>An illegal transition is rejected, not logged — the allowed set is declared on the status enum itself, so every service goes through the same rules.</p>
+      <p><strong>Payment:</strong> <code>NEW → PENDING → PAID | FAILED | CANCELLED</code>, then <code>REFUNDED</code> or <code>PARTIALLY_REFUNDED</code>.<br>
+      <strong>Shipment:</strong> <code>CREATED → PICKED_UP → IN_TRANSIT → OUT_FOR_DELIVERY → DELIVERED</code>, with <code>FAILED</code> and <code>RETURNED</code> terminal.</p>
+    </section>
+
+    <section id="epics">
+      <h2><span class="num">06</span> Epics and stories</h2>
+
+      <h3><span class="code">E1</span> Identity and accounts</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E1-S1</td><td class="story">Sign in with Google, Apple or phone number</td><td class="crit">One endpoint; provider is a claim in the token; customer created on first sign-in</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E1-S2</td><td class="story">Sign in with email and password</td><td class="crit">Social-only accounts rejected with a clear message, not "wrong password"</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E1-S3</td><td class="story">Register with email and password</td><td class="crit">Duplicate email or phone rejected; password stored bcrypt</td><td><span class="pill partial">Partial</span> service only, no endpoint</td></tr>
+          <tr><td class="id">E1-S4</td><td class="story">Manage profile and address book</td><td class="crit">Add, edit, remove, set default; default unique per customer</td><td><span class="pill partial">Partial</span> service only, no endpoint</td></tr>
+          <tr><td class="id">E1-S5</td><td class="story">Accounts merge across sign-in methods</td><td class="crit">Google then phone resolves to one Customer</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E1-S6</td><td class="story">Delete my account</td><td class="crit">Data removed or anonymized; orders retained; Apple token revoked</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E1-S7</td><td class="story">Admin manages back-office users and roles</td><td class="crit">Create, assign role, scope to merchant, deactivate</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E2</span> Catalog</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E2-S1</td><td class="story">Merchant creates a product with variants</td><td class="crit">SKU unique; slug auto-generated; price range derived from variants</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E2-S2</td><td class="story">Merchant uploads product images</td><td class="crit">S3 + CDN; size and type validated</td><td><span class="pill partial">Partial</span> no upload endpoint</td></tr>
+          <tr><td class="id">E2-S3</td><td class="story">Admin manages the category tree</td><td class="crit">Ancestors recomputed on move; subtree query is one lookup</td><td><span class="pill partial">Partial</span> service only</td></tr>
+          <tr><td class="id">E2-S4</td><td class="story">Admin manages brands</td><td class="crit">CRUD, slug unique</td><td><span class="pill todo">Todo</span> entity only</td></tr>
+          <tr><td class="id">E2-S5</td><td class="story">Customer browses a category including subcategories</td><td class="crit">Products under any descendant are returned</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E2-S6</td><td class="story">Merchant publishes or unpublishes</td><td class="crit">Only ACTIVE products reach the storefront</td><td><span class="pill built">Built</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E3</span> Search and discovery</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E3-S1</td><td class="story">Search products by name or SKU</td><td class="crit">Matches mn and en names</td><td><span class="pill partial">Partial</span> regex, ignores the text index</td></tr>
+          <tr><td class="id">E3-S2</td><td class="story">Filter by category, brand, price, availability</td><td class="crit">Filters combine; all optional</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E3-S3</td><td class="story">Sort by price, newest or popularity</td><td class="crit">Stable ordering across pages</td><td><span class="pill partial">Partial</span> generic sort</td></tr>
+          <tr><td class="id">E3-S4</td><td class="story">Featured products and home banners</td><td class="crit">Scheduled by position and date window</td><td><span class="pill todo">Todo</span> entities only</td></tr>
+          <tr><td class="id">E3-S5</td><td class="story">Relevant results for misspelled Mongolian input</td><td class="crit">Tolerates Cyrillic/Latin transliteration</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E4</span> Cart and checkout</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E4-S1</td><td class="story">Guest builds a cart before signing in</td><td class="crit">Keyed by session; expires after 30 days</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S2</td><td class="story">Guest cart merges on sign-in</td><td class="crit">Quantities summed per variant, guest cart deleted</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S3</td><td class="story">Cart shows current prices</td><td class="crit">Re-priced from the variant on every read</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S4</td><td class="story">Checkout holds my stock</td><td class="crit">Order PENDING, stock reserved atomically, cart cleared</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S5</td><td class="story">Cannot buy more than is available</td><td class="crit">Rejected with the available quantity, not a generic error</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S6</td><td class="story">Apply a coupon</td><td class="crit">Validity, window, usage limits, minimum order enforced</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S7</td><td class="story">Choose delivery type and address</td><td class="crit">Address snapshotted onto the order</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S8</td><td class="story">Unpaid order releases its stock</td><td class="crit">Cancelled after timeout, stock returned to available</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E4-S9</td><td class="story">Check out from several merchants at once</td><td class="crit">Split per merchant for fulfilment, one payment</td><td><span class="pill partial">Partial</span> no split logic — see D9</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E5</span> Payments</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E5-S1</td><td class="story">Pay with QPay</td><td class="crit">Invoice created, QR returned, order paid on confirmation</td><td><span class="pill partial">Partial</span> HTTP calls are stubs</td></tr>
+          <tr><td class="id">E5-S2</td><td class="story">System never trusts a payment callback</td><td class="crit">Gateway re-queried before marking paid; repeats ignored</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E5-S3</td><td class="story">Catch payments whose callback never arrived</td><td class="crit">Pending invoices re-checked, then settled or expired</td><td><span class="pill partial">Partial</span> job logs only</td></tr>
+          <tr><td class="id">E5-S4</td><td class="story">Pay by card, SocialPay, transfer or cash on delivery</td><td class="crit">Each selectable at checkout</td><td><span class="pill todo">Todo</span> enum only — see D8</td></tr>
+          <tr><td class="id">E5-S5</td><td class="story">Receive a valid VAT receipt (ebarimt)</td><td class="crit">Issued to the tax authority and returned to the customer</td><td><span class="pill todo">Todo</span> see D4</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E6</span> Fulfilment and delivery</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E6-S1</td><td class="story">Merchant accepts and packs an order</td><td class="crit">PAID → CONFIRMED, transition recorded with actor</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E6-S2</td><td class="story">Merchant creates a shipment and gets a tracking number</td><td class="crit">Registered with the delivery provider</td><td><span class="pill partial">Partial</span> flat-rate self-courier only</td></tr>
+          <tr><td class="id">E6-S3</td><td class="story">Customer tracks a delivery</td><td class="crit">Status and history by tracking number, without signing in</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E6-S4</td><td class="story">Correct delivery fee is charged</td><td class="crit">By zone and weight; free above a threshold</td><td><span class="pill partial">Partial</span> flat fee + threshold</td></tr>
+          <tr><td class="id">E6-S5</td><td class="story">Operator handles a failed delivery</td><td class="crit">Retry or return; stock and refund handled</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E7</span> Returns and refunds</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E7-S1</td><td class="story">Customer requests a return within the window</td><td class="crit">Recorded against specific order items</td><td><span class="pill todo">Todo</span> no RMA model</td></tr>
+          <tr><td class="id">E7-S2</td><td class="story">Merchant approves or rejects a return</td><td class="crit">Decision and reason recorded</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E7-S3</td><td class="story">Operator refunds fully or partially</td><td class="crit">Via the original payment method; order reflects it</td><td><span class="pill partial">Partial</span> entity only</td></tr>
+          <tr><td class="id">E7-S4</td><td class="story">Returned stock re-enters inventory after inspection</td><td class="crit">Movement ledgered as RETURN</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E8</span> Inventory</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E8-S1</td><td class="story">Merchant adjusts stock</td><td class="crit">Movement ledgered; product totals refreshed</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E8-S2</td><td class="story">Stock cannot oversell under concurrency</td><td class="crit">Two simultaneous checkouts for the last unit: exactly one succeeds</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E8-S3</td><td class="story">Merchant alerted when stock runs low</td><td class="crit">Alert per merchant below threshold</td><td><span class="pill partial">Partial</span> job logs only</td></tr>
+          <tr><td class="id">E8-S4</td><td class="story">Merchant manages multiple warehouses</td><td class="crit">Stock per warehouse; fulfilment picks a source</td><td><span class="pill todo">Todo</span> one hardcoded warehouse</td></tr>
+          <tr><td class="id">E8-S5</td><td class="story">Merchant imports stock in bulk</td><td class="crit">Excel upload with a per-row error report</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E9</span> Merchant</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E9-S1</td><td class="story">Merchant registers and is approved</td><td class="crit">Application, review, activation</td><td><span class="pill todo">Todo</span> entity only</td></tr>
+          <tr><td class="id">E9-S2</td><td class="story">Merchant sees sales and commission</td><td class="crit">Per-order commission visible</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E9-S3</td><td class="story">Merchant is paid out on a schedule</td><td class="crit">Payout run produces a statement and a transfer record</td><td><span class="pill todo">Todo</span> no payout model — see D2</td></tr>
+          <tr><td class="id">E9-S4</td><td class="story">Merchant manages store profile</td><td class="crit">Logo, cover, description, contacts</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E10</span> Promotions &nbsp;·&nbsp; <span class="code">E11</span> Reviews and content</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E10-S1</td><td class="story">Admin creates a coupon</td><td class="crit">Percent or fixed, caps, windows, usage limits</td><td><span class="pill partial">Partial</span> no endpoint</td></tr>
+          <tr><td class="id">E10-S2</td><td class="story">Coupon restricted to products, categories or merchants</td><td class="crit">Only matching lines discounted</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E10-S3</td><td class="story">Sale price on a variant</td><td class="crit">comparePrice shown struck through</td><td><span class="pill partial">Partial</span> field only</td></tr>
+          <tr><td class="id">E10-S4</td><td class="story">Scheduled home-page banners</td><td class="crit">By position and date window</td><td><span class="pill todo">Todo</span> entity only</td></tr>
+          <tr><td class="id">E11-S1</td><td class="story">Customer reviews a product they received</td><td class="crit">One per order item; flagged verified purchase</td><td><span class="pill todo">Todo</span> entity only</td></tr>
+          <tr><td class="id">E11-S2</td><td class="story">Operator moderates reviews</td><td class="crit">Approve or reject before publication</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E11-S3</td><td class="story">Customer keeps a wishlist</td><td class="crit">Add, remove, list</td><td><span class="pill todo">Todo</span> entity only</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3><span class="code">E12</span> Back-office &nbsp;·&nbsp; <span class="code">E13</span> Notifications</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Story</th><th>Acceptance</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">E12-S1</td><td class="story">Operator searches orders by number, phone, status, date</td><td class="crit">Merchant staff see only their own</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E12-S2</td><td class="story">Operator moves an order through its lifecycle</td><td class="crit">Illegal transitions rejected</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E12-S3</td><td class="story">Full audit trail on an order</td><td class="crit">Every status change with actor and time</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td class="id">E12-S4</td><td class="story">Admin changes settings without a deploy</td><td class="crit">Shipping fee, tax rate, timeout, commission</td><td><span class="pill partial">Partial</span> read path only</td></tr>
+          <tr><td class="id">E12-S5</td><td class="story">Admin sees sales dashboards</td><td class="crit">Revenue, orders, top products, by period</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E13-S1</td><td class="story">Customer notified when order status changes</td><td class="crit">Push, SMS or email per preference</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E13-S2</td><td class="story">Merchant notified of a new order</td><td class="crit">Within minutes</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td class="id">E13-S3</td><td class="story">Customer receives an order confirmation</td><td class="crit">Itemized, in their language</td><td><span class="pill todo">Todo</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="flows">
+      <h2><span class="num">07</span> Key flows</h2>
+      <div class="figure">
+        <div class="figcaption">Checkout — one transaction</div>
+        <pre class="mermaid">
+sequenceDiagram
+    participant C as Customer
+    participant API as public-api
+    participant INV as InventoryService
+    participant DB as MongoDB
+    C->>API: POST /v1/orders/checkout
+    API->>DB: load cart, re-price from variants
+    API->>API: apply coupon, shipping, tax
+    loop each item
+        API->>INV: reserve(variant, qty)
+        INV->>DB: conditional update, available >= qty
+        alt insufficient
+            INV-->>C: 409 out of stock, with available
+        end
+    end
+    API->>DB: save order PENDING + clear cart
+    API-->>C: order with total
+        </pre>
+      </div>
+      <div class="callout">
+        <span class="tag">Why this matters</span>
+        <p>The reservation filter itself asserts sufficient stock, so concurrent checkouts cannot oversell without a lock. The whole flow is one transaction — which is why MongoDB must run as a replica set, not a standalone.</p>
+      </div>
+      <div class="figure">
+        <div class="figcaption">Payment confirmation — callbacks are never trusted alone</div>
+        <pre class="mermaid">
+sequenceDiagram
+    participant PR as Provider
+    participant API as public-api
+    participant GW as PaymentGateway
+    PR->>API: POST /v1/payment/callback
+    API->>API: resolve invoice id
+    alt already PAID
+        API-->>PR: 200, ignored
+    end
+    API->>GW: verify(payment)
+    GW->>PR: query payment status
+    alt not paid
+        API->>API: mark FAILED
+    else paid
+        API->>API: mark PAID, order PAID
+        API->>API: commit reserved stock
+    end
+        </pre>
+      </div>
+    </section>
+
+    <section id="nfr">
+      <h2><span class="num">08</span> Non-functional requirements</h2>
+      <div class="scroller"><table>
+        <thead><tr><th>Area</th><th>Requirement</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Security</td><td>Stateless JWT carrying role and merchant scope</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Security</td><td>Account linking only on a provider-verified email or phone</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Security</td><td>No credentials in the repo; all secrets from environment</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Security</td><td>Rate limiting on auth and checkout</td><td><span class="pill todo">Todo</span></td></tr>
+          <tr><td>Correctness</td><td>Money as BigDecimal/Decimal128, never floating point</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Correctness</td><td>Stock cannot oversell under concurrency</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Correctness</td><td>Orders immutable against later catalog edits</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Availability</td><td>Uptime target and maintenance window</td><td><span class="pill todo">Todo</span> undecided — D6</td></tr>
+          <tr><td>Performance</td><td>Catalog p95 under load; peak concurrent checkouts</td><td><span class="pill todo">Todo</span> undecided — D6</td></tr>
+          <tr><td>Localization</td><td>All customer-facing text in mn and en via Accept-Language</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Localization</td><td>MNT pricing, Asia/Ulaanbaatar timestamps</td><td><span class="pill built">Built</span></td></tr>
+          <tr><td>Observability</td><td>Structured logs, health endpoints, metrics</td><td><span class="pill partial">Partial</span> health only</td></tr>
+          <tr><td>Compliance</td><td>Personal data retention and deletion policy</td><td><span class="pill todo">Todo</span> undecided — D5</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="decisions">
+      <h2><span class="num">09</span> Open decisions</h2>
+      <p class="lede">These block design work and need a human answer. Everything above that says "undecided" points here.</p>
+      <div class="scroller"><table>
+        <thead><tr><th>ID</th><th>Decision</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td class="id">D1</td><td class="story">Commission — flat, or per category / per merchant?</td><td class="crit">Changes the settlement model and what we must retain per order</td></tr>
+          <tr><td class="id">D2</td><td class="story">Merchant payout — schedule, minimum, who bears refund cost?</td><td class="crit"><strong>No payout or settlement entity exists.</strong> Core marketplace flow, currently unmodelled</td></tr>
+          <tr><td class="id">D3</td><td class="story">Returns — window, who pays return shipping, restocking rules?</td><td class="crit">Drives the entire RMA model in E7</td></tr>
+          <tr><td class="id">D4</td><td class="story">Is ebarimt (VAT receipt) issuance required for us?</td><td class="crit">Legal. Adds fields to Order and a hard integration — far cheaper now than retrofitted</td></tr>
+          <tr><td class="id">D5</td><td class="story">Personal data retention and deletion policy</td><td class="crit">Required for E1-S6; Apple requires account deletion for App Store apps</td></tr>
+          <tr><td class="id">D6</td><td class="story">Expected volumes — SKUs, orders/day, peak concurrency, uptime</td><td class="crit">Determines whether the single-Mongo design holds</td></tr>
+          <tr><td class="id">D7</td><td class="story">Delivery — own couriers, a partner, or both? UB vs aimag pricing?</td><td class="crit">Shapes DeliveryProvider implementations and fee rules</td></tr>
+          <tr><td class="id">D8</td><td class="story">Which payment methods at launch beyond QPay?</td><td class="crit">Each is a separate gateway implementation</td></tr>
+          <tr><td class="id">D9</td><td class="story">Multi-merchant orders — split into sub-orders, or one order?</td><td class="crit">Affects fulfilment, payout and the customer's order view</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="gaps">
+      <h2><span class="num">10</span> Where the gaps are</h2>
+      <p class="lede">Grouped by how much design they need, not by size — the first group is a week of plumbing, the last needs decisions before anyone writes code.</p>
+      <div class="gapgrid">
+        <div class="gapcard">
+          <h4><span class="pill partial">Partial</span> Endpoints over working services</h4>
+          <p>The logic exists and nothing exposes it. Thin work: customer registration, profile and addresses, category management, coupon management, image upload, system config admin.</p>
+        </div>
+        <div class="gapcard">
+          <h4><span class="pill partial">Partial</span> Stubs that must become real</h4>
+          <p>QPay HTTP calls, payment reconciliation, low-stock alerts, delivery tracking. Shape is defined; the implementations are missing.</p>
+        </div>
+        <div class="gapcard">
+          <h4><span class="pill todo">Todo</span> Entities with nothing behind them</h4>
+          <p>Brand, Banner, Review, Wishlist, Warehouse, Merchant, Refund. Each needs a service, an API and its rules.</p>
+        </div>
+        <div class="gapcard">
+          <h4><span class="pill todo">Todo</span> Not modelled — needs design first</h4>
+          <p>Merchant payout and settlement, the returns/RMA workflow, notifications, ebarimt, multi-merchant order splitting, analytics.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  Market · System requirements and analysis · Derived from <code>market-backend</code> at the current commit.
+</footer>
